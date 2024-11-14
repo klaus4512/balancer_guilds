@@ -30,7 +30,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
-                            </div>
+                                <NavLink
+                                    href={route('player.index')}
+                                    active={route().current('player.index')}
+                                >
+                                    Jogadores
+                                </NavLink>                            </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">

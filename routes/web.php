@@ -14,6 +14,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('player', function () {
+    return Inertia::render('Player/Index');
+})->name('player.index');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

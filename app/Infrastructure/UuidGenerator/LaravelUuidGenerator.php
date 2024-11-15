@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\UuidGenerator;
 
-use App\Interfaces\UuidGenerator;
+use App\Domain\Interfaces\UuidGenerator;
 use Illuminate\Support\Str;
 
 class LaravelUuidGenerator implements UuidGenerator

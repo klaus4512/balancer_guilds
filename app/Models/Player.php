@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\CharacterClass;
+use App\Domain\Enums\CharacterClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

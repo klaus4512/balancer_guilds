@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Repositories\Player;
 
-use App\Entities\Player;
-use App\Enums\CharacterClass;
-use App\Interfaces\Repositories\PlayerRepository;
+use App\Domain\Entities\Player;
+use App\Domain\Enums\CharacterClass;
+use App\Domain\Interfaces\Repositories\PlayerRepository;
 
 class PlayerEloquentRepository implements PlayerRepository
 {

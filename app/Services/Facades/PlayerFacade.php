@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Facades;
 
-use App\Entities\Player;
+use App\Domain\Entities\Player;
 use App\Services\PlayerService;
 use Illuminate\Support\Facades\Facade;
 

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Entities;
+namespace App\Domain\Entities;
 
-use App\Enums\CharacterClass;
-use App\Interfaces\UuidGenerator;
+use App\Domain\Enums\CharacterClass;
 
 class Player
 {

@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
+use App\Domain\Interfaces\Repositories\PlayerRepository;
+use App\Domain\Interfaces\UuidGenerator;
 use App\Infrastructure\Repositories\Player\PlayerEloquentRepository;
 use App\Infrastructure\UuidGenerator\LaravelUuidGenerator;
-use App\Interfaces\Repositories\PlayerRepository;
-use App\Interfaces\UuidGenerator;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 

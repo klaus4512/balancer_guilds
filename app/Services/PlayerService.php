@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Entities\Player;
-use App\Interfaces\Repositories\PlayerRepository;
+use App\Domain\Entities\Player;
+use App\Domain\Interfaces\Repositories\PlayerRepository;
 
 class PlayerService
 {

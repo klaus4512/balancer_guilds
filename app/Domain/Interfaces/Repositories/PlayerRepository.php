@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Interfaces\Repositories;
+namespace App\Domain\Interfaces\Repositories;
 
-use App\Entities\Player;
+use App\Domain\Entities\Player;
 
 interface PlayerRepository
 {

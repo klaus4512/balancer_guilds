@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\Player;
-use App\Enums\CharacterClass;
+use App\Domain\Entities\Player;
+use App\Domain\Enums\CharacterClass;
+use App\Domain\Interfaces\UuidGenerator;
 use App\Http\Requests\PlayerStoreRequest;
-use App\Interfaces\UuidGenerator;
 use App\Services\Facades\PlayerFacade;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

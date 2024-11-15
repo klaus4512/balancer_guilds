@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\CharacterClass;
+use App\Domain\Enums\CharacterClass;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

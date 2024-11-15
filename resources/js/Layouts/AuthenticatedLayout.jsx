@@ -3,10 +3,27 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-
+import {useEffect, useState} from 'react';
+import Swal from 'sweetalert2';
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const flash = usePage().props.flash;
+
+    useEffect(() => {
+        if (flash.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso',
+                text: flash.success,
+            });
+        } else if (flash.error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: flash.error,
+            });
+        }
+    }, [flash]);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -35,7 +52,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('player.index')}
                                 >
                                     Jogadores
-                                </NavLink>                            </div>
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
@@ -138,6 +156,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href={route('player.index')}
+                            active={route().current('player.index')}
+                        >
+                            Jogadores
                         </ResponsiveNavLink>
                     </div>
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -14,9 +15,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('player', function () {
-    return Inertia::render('Player/Index');
-})->name('player.index');
+Route::resource('player', PlayerController::class);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

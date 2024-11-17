@@ -7,22 +7,32 @@ use App\Domain\Interfaces\Repositories\PlayerRepository;
 
 class PlayerService
 {
-    public function __construct(private readonly PlayerRepository $playerRepository)
+    /**
+     * @param Player[] $players
+     */
+    public function groupByClassType(array $players, array $requiredClass): array
     {
+        $groupedPlayers = [];
+        foreach ($players as $player) {
+            if (in_array($player->getCharacterClass(), $requiredClass, true)) {
+                $groupedPlayers['required'][$player->getCharacterClass()->name][] = $player;
+            }else{
+                $groupedPlayers['notRequired'][] = $player;
+            }
+
+        }
+        return $groupedPlayers;
     }
 
-    public function index(int $page):array
+    /**
+     * @param Player[] $players
+     */
+    public function sortByLevel(array $players): array
     {
-        return $this->playerRepository->listPaginate($page);
+        usort($players, static function (Player $a, Player $b) {
+            return $b->getLevel() - $a->getLevel();
+        });
+        return $players;
     }
 
-    public function store(Player $player): void
-    {
-        $this->playerRepository->store($player);
-    }
-
-    public function delete(string $id): void
-    {
-        $this->playerRepository->delete($id);
-    }
 }

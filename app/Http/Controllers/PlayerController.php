@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Domain\Entities\Player;
 use App\Domain\Enums\CharacterClass;
+use App\Domain\Interfaces\Repositories\PlayerRepository;
 use App\Domain\Interfaces\UuidGenerator;
 use App\Http\Requests\PlayerStoreRequest;
 use App\Services\Facades\PlayerFacade;
@@ -15,13 +16,13 @@ use Inertia\Response;
 class PlayerController extends Controller
 {
     //
-    public function __construct(private UuidGenerator $uuidGenerator)
+    public function __construct(private UuidGenerator $uuidGenerator, private readonly PlayerRepository $playerRepository)
     {
     }
 
     public function index(Request $request): Response
     {
-        $players = PlayerFacade::index($request->page ?? 1);
+        $players = $this->playerRepository->listPaginate($request->page ?? 1);
         return Inertia::render('Player/Index', [
             'players' => $players
         ]);
@@ -45,15 +46,14 @@ class PlayerController extends Controller
             CharacterClass::getFromValue($request->characterClass),
             $request->level,
         );
-        PlayerFacade::store($player);
-
+        $this->playerRepository->store($player);
         return redirect()->route('player.index')->with('success', 'Jogador criado.');
     }
 
     public function destroy($id): RedirectResponse
     {
         try{
-            PlayerFacade::delete($id);
+            $this->playerRepository->delete($id);
             return redirect()->route('player.index')->with('success', 'Jogador deletado com sucesso!.');
         }catch (\Exception $e){
             return redirect()->route('player.index')->with('error', $e->getMessage());

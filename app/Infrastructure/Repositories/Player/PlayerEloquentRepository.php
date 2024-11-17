@@ -27,13 +27,6 @@ class PlayerEloquentRepository implements PlayerRepository
         );
     }
 
-    public function update(Player $player): void
-    {
-        $playerModel = \App\Models\Player::query()->where('id', $player->getId())->first();
-        $playerModel->fill($player->toArray());
-        $playerModel->save();
-    }
-
     public function listPaginate(int $page = 1, int $perPage = 10, string $orderDirection = 'asc', string $orderField = 'name'): array
     {
         $players = \App\Models\Player::query()->orderBy($orderField, $orderDirection)->paginate($perPage, ['*'], 'page', $page);
@@ -47,5 +40,14 @@ class PlayerEloquentRepository implements PlayerRepository
     public function delete(string $id): void
     {
         \App\Models\Player::query()->where('id', $id)->delete();
+    }
+
+    public function all(): array
+    {
+        $players = \App\Models\Player::query()->get()->toArray();
+        foreach ($players as $key => $player) {
+            $players[$key]['character_class'] = CharacterClass::getWithData($player['character_class']);
+        }
+        return $players;
     }
 }

@@ -6,9 +6,8 @@ use App\Services\PlayerService;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array index(int $page)
- * @method static void store(Player $player)
- * @method static void delete(string $id)
+ * @method static array groupByClassType(array $players, array $requiredClass)
+ * @method static array sortByLevel(array $players)
  */
 
 class PlayerFacade extends Facade {

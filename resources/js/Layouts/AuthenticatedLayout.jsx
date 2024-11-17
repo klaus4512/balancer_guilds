@@ -53,6 +53,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Jogadores
                                 </NavLink>
+                                <NavLink
+                                    href={route('session.index')}
+                                    active={route().current('session.index')}
+                                >
+                                    Partidas
+                                </NavLink>
                             </div>
                         </div>
 
@@ -163,6 +169,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('player.index')}
                         >
                             Jogadores
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href={route('session.index')}
+                            active={route().current('session.index')}
+                        >
+                            Partidas
                         </ResponsiveNavLink>
                     </div>
 

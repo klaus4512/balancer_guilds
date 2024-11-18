@@ -7,6 +7,8 @@ use App\Domain\Entities\Player;
 use App\Domain\Enums\CharacterClass;
 use App\Domain\Interfaces\UuidGenerator;
 use App\Services\Facades\PlayerFacade;
+use App\Services\Strategies\GuildBalanceStrategy;
+use App\Services\Strategies\GuildBalanceVariance;
 
 class GuildService
 {
@@ -20,7 +22,10 @@ class GuildService
         CharacterClass::ARCHER,
     ];
 
-    public function __construct(private UuidGenerator $uuidGenerator)
+    public function __construct(
+        private UuidGenerator $uuidGenerator,
+        private GuildBalanceStrategy $guildBalanceStrategy
+    )
     {
     }
 
@@ -39,13 +44,13 @@ class GuildService
 
         //Distribuir jogadores obrigatórios em cada guilda
         for ($i = 0; $i < $numberOfGuilds; $i++) {
-            $guild = new Guild($this->uuidGenerator->generate(), 'Guilda '.$i, $sessionId);
+            $guild = new Guild($this->uuidGenerator->generate(), 'Guilda '.$i + 1 , $sessionId);
             foreach ($groupedPlayers['required'] as $class => $player) {
                 if (!empty($groupedPlayers['required'][$class])) {
                     $guild->addPlayer(array_shift($groupedPlayers['required'][$class]));
                 }else{
                     $classDescription = CharacterClass::getWithData(CharacterClass::getFromName($class)->value)['description'];
-                    $guild->setMessage($guild->getMessage() . 'Não foi possivel adicionar a classe ' . $classDescription . " a gilda\n");
+                    $guild->setMessage($guild->getMessage() . 'Não foi possível adicionar a classe ' . $classDescription . " a guilda\n");
                     if (!empty($groupedPlayers['notRequired'])) {
                         $guild->addPlayer(array_shift($groupedPlayers['notRequired']));
                     }
@@ -99,40 +104,7 @@ class GuildService
 
     public function balanceGuilds(array $guilds): array
     {
-        $guilds = $this->sortGuildsByAverageRating($guilds);
-
-        $lowIndex = 0;
-        $highIndex = count($guilds) - 1;
-        $interactions = 0;
-        $diferenceBetweenGuilds = $this->calculateGuildsVariance($guilds);
-
-        while ($interactions < 10000 && $diferenceBetweenGuilds > 2) {
-            $lowGuild = $guilds[$lowIndex];
-            $highGuild = $guilds[$highIndex];
-
-            $lowGuildPlayers = $lowGuild->getPlayers();
-            $highGuildPlayers = $highGuild->getPlayers();
-
-            foreach ($lowGuildPlayers as $lowPlayer) {
-                foreach ($highGuildPlayers as $highPlayer) {
-                    if ($this->canSwapPlayers($lowPlayer, $highPlayer)) {
-                        if ($lowPlayer->getLevel() < $highPlayer->getLevel()) {
-                            $this->swapPlayers($lowGuild, $highGuild, $lowPlayer, $highPlayer);
-                            break 2;
-                        }
-                    }
-                }
-            }
-
-            $guilds[$lowIndex] = $this->calculateAverageRating($lowGuild);
-            $guilds[$highIndex] = $this->calculateAverageRating($highGuild);
-
-            $guilds = $this->sortGuildsByAverageRating($guilds);
-            $interactions++;
-            $diferenceBetweenGuilds = $this->calculateGuildsVariance($guilds);
-        }
-
-        return $guilds;
+        return $this->guildBalanceStrategy->balance($guilds);
     }
 
     /**
@@ -147,42 +119,16 @@ class GuildService
         return $guilds;
     }
 
-    /**
-     * @param Guild[] $guilds
-     * @return float
-     */
-    public function calculateGuildsVariance(array $guilds): float
+    public function swapPlayers(Guild $guild1, Guild $guild2, Player $player1, Player $player2): void
     {
-        $numGuilds = count($guilds);
-        if ($numGuilds === 0) {
-            return 0.0;
-        }
+        $guild1->removePlayer($player1);
+        $guild2->removePlayer($player2);
 
-        $sum = 0;
-        foreach ($guilds as $guild) {
-            $sum += $guild->getAverageRating();
-        }
-
-        $mean = $sum / $numGuilds;
-
-        $sumOfSquares = 0;
-        foreach ($guilds as $guild) {
-            $sumOfSquares += ($guild->getAverageRating() - $mean) ** 2;
-        }
-
-        return $sumOfSquares / $numGuilds;
+        $guild1->addPlayer($player2);
+        $guild2->addPlayer($player1);
     }
 
-    private function swapPlayers(Guild $lowGuild, Guild $highGuild, Player $lowPlayer, Player $highPlayer): void
-    {
-        $lowGuild->removePlayer($lowPlayer);
-        $highGuild->removePlayer($highPlayer);
-
-        $lowGuild->addPlayer($highPlayer);
-        $highGuild->addPlayer($lowPlayer);
-    }
-
-    private function canSwapPlayers(Player $player1, Player $player2): bool
+    public function canSwapPlayers(Player $player1, Player $player2): bool
     {
         if (in_array($player1->getCharacterClass(), $this->requiredGuildClasses, true)){
             return $player1->getCharacterClass() === $player2->getCharacterClass();
@@ -192,6 +138,4 @@ class GuildService
             return in_array($player2->getCharacterClass(), $this->optionalGuildClasses, true);
         }
     }
-
-
 }

@@ -12,7 +12,10 @@ class PlayerEloquentRepository implements PlayerRepository
     public function store(Player $player): void
     {
         $playerModel = new \App\Models\Player();
-        $playerModel->fill($player->toArray());
+        $playerModel->id = $player->getId();
+        $playerModel->name = $player->getName();
+        $playerModel->level = $player->getLevel();
+        $playerModel->character_class = $player->getCharacterClass()->value;
         $playerModel->save();
     }
 

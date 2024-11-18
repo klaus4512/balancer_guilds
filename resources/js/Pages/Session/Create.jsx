@@ -23,6 +23,14 @@ export default function CreateSession({ players = [] }) {
         post(route('session.store'));
     };
 
+    // Sort players by class and then by level
+    const sortedPlayers = [...players].sort((a, b) => {
+        if (a.character_class.description === b.character_class.description) {
+            return a.name.localeCompare(b.name);
+        }
+        return a.character_class.description.localeCompare(b.character_class.description);
+    });
+
     return (
         <AuthenticatedLayout
             header={
@@ -63,19 +71,24 @@ export default function CreateSession({ players = [] }) {
                                 <div className="mt-4">
                                     <label>Jogadores</label>
                                     <div className="mt-2 space-y-2">
-                                        {players.map(player => (
-                                            <div key={player.id} className="flex items-center">
-                                                <input
-                                                    id={`player-${player.id}`}
-                                                    type="checkbox"
-                                                    value={player.id}
-                                                    checked={data.players.includes(player.id)}
-                                                    onChange={() => handleCheckboxChange(player.id)}
-                                                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                                                />
-                                                <label htmlFor={`player-${player.id}`} className="ml-2 block text-sm text-gray-900">
-                                                    {player.name} - {player.character_class.description} - Nível: {player.level}
-                                                </label>
+                                        {sortedPlayers.map((player, index) => (
+                                            <div key={player.id}>
+                                                {index > 0 && sortedPlayers[index - 1].character_class.description !== player.character_class.description && (
+                                                    <hr className="my-2 border-2"/>
+                                                )}
+                                                <div className="flex items-center">
+                                                    <input
+                                                        id={`player-${player.id}`}
+                                                        type="checkbox"
+                                                        value={player.id}
+                                                        checked={data.players.includes(player.id)}
+                                                        onChange={() => handleCheckboxChange(player.id)}
+                                                        className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                                                    />
+                                                    <label htmlFor={`player-${player.id}`} className="ml-2 block text-sm text-gray-900">
+                                                        {player.name} - {player.character_class.description} - Nível: {player.level}
+                                                    </label>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

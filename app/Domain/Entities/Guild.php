@@ -95,6 +95,7 @@ class Guild
             'average_rating' => $this->averageRating,
             'session_id' => $this->sessionId,
             'message' => $this->message,
+            'players' => array_map(static fn(Player $player) => $player->toArray(), $this->players)
         ];
     }
 }

@@ -23,6 +23,9 @@ class SessionPostRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|string',
+            'maxGuildPlayers' => 'required|integer|min:3',
+            'players' => 'required|array',
         ];
     }
 }

@@ -15,6 +15,10 @@ class Session
     private array $guilds = [];
     public function __construct(string $id, string $name, int $maxGuildPlayers)
     {
+        if($maxGuildPlayers < 2) {
+            throw new \InvalidArgumentException('O número de jogadores por Guilda deve ser maior que 3');
+        }
+
         $this->id = $id;
         $this->name = $name;
         $this->maxGuildPlayers = $maxGuildPlayers;
@@ -48,12 +52,18 @@ class Session
         $this->guilds = $guilds;
     }
 
+    public function addGuild(Guild $guild): void
+    {
+        $this->guilds[] = $guild;
+    }
+
     public function toArray():array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
             'max_guild_players' => $this->maxGuildPlayers,
+            'guilds' => array_map(static fn(Guild $guild) => $guild->toArray(), $this->guilds)
         ];
     }
 

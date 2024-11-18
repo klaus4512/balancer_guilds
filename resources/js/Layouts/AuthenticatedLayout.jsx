@@ -53,6 +53,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Jogadores
                                 </NavLink>
+                                <NavLink
+                                    href={route('session.index')}
+                                    active={route().current('session.index')}
+                                >
+                                    Partidas
+                                </NavLink>
                             </div>
                         </div>
 
@@ -87,14 +93,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
-                                            Profile
+                                            Perfil
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            Sair
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -164,6 +170,13 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Jogadores
                         </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href={route('session.index')}
+                            active={route().current('session.index')}
+                        >
+                            Partidas
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
@@ -178,14 +191,14 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
+                                Perfil
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
                                 as="button"
                             >
-                                Log Out
+                                Sair
                             </ResponsiveNavLink>
                         </div>
                     </div>

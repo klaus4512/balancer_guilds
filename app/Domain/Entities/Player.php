@@ -48,7 +48,7 @@ class Player
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'character_class' => $this->characterClass,
+            'character_class' => CharacterClass::getWithData($this->characterClass->value),
             'level' => $this->level,
         ];
     }

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -14,9 +16,11 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('player', function () {
-    return Inertia::render('Player/Index');
-})->name('player.index');
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('player', PlayerController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::resource('session', SessionController::class)->only(['index', 'create', 'store', 'show']);
+});
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

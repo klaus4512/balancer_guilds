@@ -3,10 +3,27 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-
+import {useEffect, useState} from 'react';
+import Swal from 'sweetalert2';
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const flash = usePage().props.flash;
+
+    useEffect(() => {
+        if (flash.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso',
+                text: flash.success,
+            });
+        } else if (flash.error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: flash.error,
+            });
+        }
+    }, [flash]);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -35,7 +52,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('player.index')}
                                 >
                                     Jogadores
-                                </NavLink>                            </div>
+                                </NavLink>
+                                <NavLink
+                                    href={route('session.index')}
+                                    active={route().current('session.index')}
+                                >
+                                    Partidas
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
@@ -69,14 +93,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
-                                            Profile
+                                            Perfil
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            Sair
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -139,6 +163,20 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href={route('player.index')}
+                            active={route().current('player.index')}
+                        >
+                            Jogadores
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            href={route('session.index')}
+                            active={route().current('session.index')}
+                        >
+                            Partidas
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
@@ -153,14 +191,14 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
+                                Perfil
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
                                 as="button"
                             >
-                                Log Out
+                                Sair
                             </ResponsiveNavLink>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ class GuildEloquentRepository implements GuildRepository
             $playersIds[] = $player->getId();
         }
 
-        $guildModel->players()->sync($playersIds);
+        $guildModel->players()->attach($playersIds);
     }
 
     public function find(string $id): Guild

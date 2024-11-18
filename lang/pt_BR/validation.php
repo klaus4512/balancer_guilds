@@ -219,6 +219,10 @@ return [
         'documentType' => 'tipo de documento',
         'lastName' => 'sobrenome',
         'reason' => 'motivo',
+        'characterClass' => 'classe do personagem',
+        'level' => 'nível',
+        'maxGuildPlayers' => 'jogadores por guilda',
+        'players' => 'jogadores',
     ],
 
 ];

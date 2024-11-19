@@ -22,7 +22,7 @@ export default function Index() {
                         <div className="p-6 text-gray-900">
                             <ButtonLink href={route('player.create')}>Cadastrar jogador</ButtonLink>
                         </div>
-                        <div className="p-6">
+                        <div className="p-6 overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead>
                                 <tr>
@@ -46,7 +46,7 @@ export default function Index() {
                                 </tbody>
                             </table>
                             <div className="mt-4">
-                            <Pagination pagination={players} />
+                                <Pagination pagination={players} />
                             </div>
                         </div>
                     </div>

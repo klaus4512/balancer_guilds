@@ -9,6 +9,6 @@ E criar partidas onde os jogadores que participarão dela são balaceados de aco
 
 ## Aplicação de testes
 
-Você pode testar a aplicação em: [https://balancer-guilds.herokuapp.com/](https://balancer-guilds.herokuapp.com/)
+Você pode testar a aplicação em: [https://balancer-guilds-c6fe9c91e76d.herokuapp.com/](https://balancer-guilds-c6fe9c91e76d.herokuapp.com/)
 
 Basta registrar-se com o seu email e criar uma senha para acessar a aplicação.
